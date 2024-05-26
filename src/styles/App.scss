@@ -1,0 +1,40 @@
+// src/styles/App.scss
+
+.pokedex {
+  width: 900px;
+  height: 600px;
+  display: grid;
+  justify-items: center;
+  place-items: center;
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: black 5px 5px;
+
+  grid-template-columns: 1fr 0.1fr 1fr;
+  border: 2px solid black;
+  background-color: #ab0823;
+
+  &__pannel {
+    width: 100%;
+    height: 100%;
+    border: 4px solid black;
+    border-radius: 10px;
+    background-color: #dc0b2d;
+  }
+
+  &__middle {
+    width: 100%;
+    height: 100%;
+    padding: 30px 10px;
+    display: grid;
+    justify-items: center;
+    place-items: center;
+    column-gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+
+    &-line {
+      height: 100%;
+      border: 2px dashed black;
+    }
+  }
+}
