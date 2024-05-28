@@ -1,0 +1,12 @@
+// src/components/evolution/style/evolution.scss
+.evolution {
+  &__image {
+    width: 100px;
+    height: 100px;
+  }
+  &__name {
+    font-size: 12px;
+    text-transform: capitalize;
+    font-weight: bolder;
+  }
+}
