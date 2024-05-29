@@ -24,6 +24,13 @@ export default function LeftPannel({ offset, setOffset, setSelectedPokemon }) {
     setSelectedPokemon(pokemon);
   }
 
+  function handleForm(event) {
+    event.preventDefault();
+    // console.log(event.target.name.value);
+    setSelectedPokemon(event.target.name.value);
+    event.target.name.value = "";
+  }
+
   useEffect(() => {
     const API_URL = `https://pokeapi.co/api/v2/pokemon?limit=8&offset=${offset}`;
 
@@ -55,7 +62,7 @@ export default function LeftPannel({ offset, setOffset, setSelectedPokemon }) {
         <button onClick={incrementOffset}>
           <img src="icons/caret-down-solid.svg" alt="" />
         </button>
-        <form action="#">
+        <form action="#" onSubmit={handleForm}>
           <input type="text" id="name" placeholder="Pokemon Name" />
           <button type="submit">
             <img src="icons/magnifying-glass-solid.svg" alt="" />

@@ -62,7 +62,8 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
                   setLoaded(true);
                 });
             });
-        });
+        })
+        .catch(() => setSelectedPokemon("invalid"));
     }
   }, [selectedPokemon]);
 
@@ -84,6 +85,8 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
 
   if (selectedPokemon == "") {
     return <div className="details">{noPokemon("Select a Pokemon")}</div>;
+  } else if (selectedPokemon == "invalid") {
+    return <div className="details">{noPokemon("Invaild Pokemon", true)}</div>;
   } else if (!loaded) {
     return <div className="details">{noPokemon("Loading ...")}</div>;
   } else if (!pokemonData) {
