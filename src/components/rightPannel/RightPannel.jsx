@@ -44,7 +44,10 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
           pokemon["id"] = resJSON.id;
           pokemon["order"] = resJSON.order;
           pokemon["name"] = resJSON.name;
-          pokemon["sprite"] = resJSON.sprites.other.dream_world.front_default;
+          pokemon["sprite"] =
+            resJSON.sprites.other.dream_world.front_default ||
+            resJSON.sprites.front_default;
+          // pokemon["sprite"] = resJSON.sprites.front_default;
           return resJSON.species.url;
         })
         .then((speciesURL) => {
@@ -76,6 +79,7 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
               key={crypto.randomUUID()}
               pokemon={pokemon}
               setSelectedPokemon={setSelectedPokemon}
+              selectedPokemon={selectedPokemon}
             />
           );
         })

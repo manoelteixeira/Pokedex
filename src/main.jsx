@@ -4,12 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import "./styles/index.scss";
 
-// ReactDOM.createRoot(document.getElementById("root")).render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
-
 const router = createBrowserRouter([
   {
     path: "/",

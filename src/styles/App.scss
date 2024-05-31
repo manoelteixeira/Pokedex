@@ -1,17 +1,18 @@
 // src/styles/App.scss
 
 .pokedex {
-  width: 900px;
-  height: 650px;
+  width: 100%;
+  height: 100%;
   display: grid;
   justify-items: center;
   place-items: center;
   padding: 30px 20px;
   border-radius: 20px;
+
   box-shadow: black 5px 5px;
 
   grid-template-columns: 1fr 0.1fr 1fr;
-  border: 2px solid black;
+  border: 4px solid black;
   background-color: #ab0823;
 
   &__middle {

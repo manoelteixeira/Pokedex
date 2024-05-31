@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import "./style/evolution.scss";
 
-export default function Evolution({ pokemon, setSelectedPokemon }) {
+export default function Evolution({
+  pokemon,
+  setSelectedPokemon,
+  selectedPokemon,
+}) {
   const [evolutionData, setEvolutionData] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -14,7 +18,10 @@ export default function Evolution({ pokemon, setSelectedPokemon }) {
       .then((res) => res.json())
       .then((resJSON) => {
         const name = resJSON.name;
-        const sprite = resJSON.sprites.other.dream_world.front_default;
+        const sprite =
+          resJSON.sprites.other.dream_world.front_default ||
+          resJSON.sprites.front_default;
+
         return { name, sprite };
       })
       .then((data) => {
@@ -30,6 +37,7 @@ export default function Evolution({ pokemon, setSelectedPokemon }) {
       <div
         className="evolution"
         onClick={() => setSelectedPokemon(evolutionData.name)}
+        style={{ borderColor: pokemon == selectedPokemon && "red" }}
       >
         <img
           src={evolutionData.sprite}
