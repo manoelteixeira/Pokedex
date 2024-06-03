@@ -3,8 +3,8 @@
 @import url("../../../styles/_fonts.scss");
 
 .details {
-  // width: 100%;
-  width: 450px;
+  width: 100%;
+  // width: 450px;
   height: 100%;
   padding: 10px;
   background-color: white;
@@ -43,6 +43,37 @@
       text-transform: capitalize;
       padding-top: 20%;
       font-weight: bolder;
+    }
+  }
+
+  &__type {
+    display: grid;
+    place-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr;
+
+    &-title {
+      width: 100%;
+      font-size: 20px;
+      font-weight: bolder;
+      text-align: center;
+      padding-bottom: 10px;
+    }
+
+    &-items {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    &-item {
+      padding: 5px 10px;
+      border: 3px solid black;
+      text-transform: capitalize;
+      font-weight: bold;
+      border-radius: 1.5em;
+      cursor: pointer;
+      color: white;
     }
   }
 
@@ -120,4 +151,59 @@
       }
     }
   }
+}
+
+.bug {
+  background-color: #94bc4a;
+}
+.dark {
+  background-color: #736c75;
+}
+.dragon {
+  background-color: #6a7baf;
+}
+.electric {
+  background-color: #e5c531;
+}
+.fairy {
+  background-color: #e397d1;
+}
+.fighting {
+  background-color: #cb5f48;
+}
+.fire {
+  background-color: #ea7a3c;
+}
+.flying {
+  background-color: #7da6de;
+}
+.ghost {
+  background-color: #846ab6;
+}
+.grass {
+  background-color: #71c558;
+}
+.ground {
+  background-color: #cc9f4f;
+}
+.ice {
+  background-color: #70cbd4;
+}
+.normal {
+  background-color: #aab09f;
+}
+.poison {
+  background-color: #b468b7;
+}
+.psychic {
+  background-color: #e5709b;
+}
+.rock {
+  background-color: #b2a061;
+}
+.steel {
+  background-color: #89a1b0;
+}
+.water {
+  background-color: #539ae2;
 }

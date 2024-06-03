@@ -44,6 +44,7 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
           pokemon["id"] = resJSON.id;
           pokemon["order"] = resJSON.order;
           pokemon["name"] = resJSON.name;
+          pokemon["types"] = resJSON.types.map((slot) => slot.type.name);
           pokemon["sprite"] =
             resJSON.sprites.other.dream_world.front_default ||
             resJSON.sprites.front_default;
@@ -107,6 +108,22 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
           </div>
           <div className="details__header-name">{pokemonData.name}</div>
           <div className="details__header-number">No. {pokemonData.order}</div>
+        </div>
+        {/* Types */}
+        <div className="details__type">
+          <div className="details__type-title">Type</div>
+          <div className="details__type-items">
+            {pokemonData.types.map((type) => {
+              return (
+                <div
+                  key={crypto.randomUUID()}
+                  className={`details__type-item ${type}`}
+                >
+                  {type}
+                </div>
+              );
+            })}
+          </div>
         </div>
         {/* Evolutions */}
         {pokemonData.evolutions.length > 1 && (
