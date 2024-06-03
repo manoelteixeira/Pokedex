@@ -21,7 +21,6 @@ export default function Evolution({
         const sprite =
           resJSON.sprites.other.dream_world.front_default ||
           resJSON.sprites.front_default;
-
         return { name, sprite };
       })
       .then((data) => {

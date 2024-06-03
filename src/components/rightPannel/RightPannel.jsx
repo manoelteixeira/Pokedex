@@ -1,7 +1,10 @@
 // src/components/rightPannel/RightPannel.jsx
 
 import { useEffect, useState } from "react";
+import Header from "./Header";
+import Types from "./Types";
 import Evolution from "../evolution/Evolution";
+
 import "./styles/rightPannel.scss";
 
 function getEvolutionChain(chain) {
@@ -48,7 +51,7 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
           pokemon["sprite"] =
             resJSON.sprites.other.dream_world.front_default ||
             resJSON.sprites.front_default;
-          // pokemon["sprite"] = resJSON.sprites.front_default;
+
           return resJSON.species.url;
         })
         .then((speciesURL) => {
@@ -101,30 +104,9 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
   } else {
     return (
       <div className="details">
-        {/* Header */}
-        <div className="details__header">
-          <div className="details__header-image">
-            <img src={pokemonData.sprite} alt={pokemonData.name} />
-          </div>
-          <div className="details__header-name">{pokemonData.name}</div>
-          <div className="details__header-number">No. {pokemonData.order}</div>
-        </div>
-        {/* Types */}
-        <div className="details__type">
-          <div className="details__type-title">Type</div>
-          <div className="details__type-items">
-            {pokemonData.types.map((type) => {
-              return (
-                <div
-                  key={crypto.randomUUID()}
-                  className={`details__type-item ${type}`}
-                >
-                  {type}
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <Header pokemonData={pokemonData} />
+
+        <Types pokemonData={pokemonData} />
         {/* Evolutions */}
         {pokemonData.evolutions.length > 1 && (
           <div className="details__evolutions">

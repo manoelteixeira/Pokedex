@@ -20,13 +20,11 @@ export default function LeftPannel({ offset, setOffset, setSelectedPokemon }) {
 
   function selectPokemon(event) {
     const pokemon = event.target.innerText.toLowerCase();
-    // setSelectedPokemon(pokemon.name.toLowerCase());
     setSelectedPokemon(pokemon);
   }
 
   function handleForm(event) {
     event.preventDefault();
-    // console.log(event.target.name.value);
     setSelectedPokemon(event.target.name.value);
     event.target.name.value = "";
   }
@@ -63,7 +61,7 @@ export default function LeftPannel({ offset, setOffset, setSelectedPokemon }) {
           <img src="icons/caret-down-solid.svg" alt="" />
         </button>
         <form action="#" onSubmit={handleForm}>
-          <input type="text" id="name" placeholder="Pokemon Name" />
+          <input type="text" id="name" placeholder="Pokemon Name or Number" />
           <button type="submit">
             <img src="icons/magnifying-glass-solid.svg" alt="" />
           </button>
