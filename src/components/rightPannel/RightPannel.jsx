@@ -23,19 +23,19 @@ export default function RightPannel({
   pokemonList,
   setSelectedPokemon,
 }) {
-  const pokemon = (selectedPokemon != "" &&
-    pokemonList.find((pokemon) => pokemon.name == selectedPokemon)) || {
-    error: "Pokemon Not Found",
-  };
-
-  if (!pokemon) {
-    //   No Pokemon selected
+  if (selectedPokemon == "") {
+    // No Pokemon selected
     return (
       <div className="right-pannel">
         <PokeballView message={"Select Pokemon"} />
       </div>
     );
   }
+
+  const pokemon = (selectedPokemon != "" &&
+    pokemonList.find((pokemon) => pokemon.name == selectedPokemon)) || {
+    error: "Pokemon Not Found",
+  };
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
