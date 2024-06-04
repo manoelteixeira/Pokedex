@@ -84,7 +84,6 @@ export default function RightPannel({
                 })
                 .finally(() => {
                   setPokemonData({ ...data });
-                  console.log(pokemonData);
                   setIsDataLoaded(true);
                 })
                 .catch(
@@ -102,7 +101,7 @@ export default function RightPannel({
     setIsLoaded(false);
     setTimeout(() => {
       setIsLoaded(true);
-    }, 1400);
+    }, 2400);
   }, [isDataLoaded]);
 
   // Invalid Pokemon

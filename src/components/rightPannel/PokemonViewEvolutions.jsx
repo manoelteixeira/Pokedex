@@ -5,7 +5,6 @@ export default function PokemonViewEvolutions({
   setSelectedPokemon,
   currentPokemon,
 }) {
-  console.log(currentPokemon);
   if (evolutions.length == 1) {
     return (
       <div className="pokemon-view__evolutions">
