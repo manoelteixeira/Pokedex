@@ -1,0 +1,118 @@
+// src/components/rightPannel/styles/pokemonView.scss
+.pokemon-view {
+  display: grid;
+  place-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 10px;
+
+  &__header {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "img name"
+      "img num"
+      "img .";
+
+    &-image {
+      grid-area: img;
+      border: 6px solid black;
+      border-radius: 100%;
+
+      img {
+        width: 150px;
+        height: 150px;
+      }
+    }
+    &-number {
+      grid-area: num;
+      font-weight: lighter;
+    }
+    &-name {
+      grid-area: name;
+      text-transform: capitalize;
+      padding-top: 20%;
+      font-weight: bolder;
+    }
+  }
+
+  &__types {
+    display: grid;
+    place-items: center;
+    justify-content: center;
+    grid-template-columns: 1fr;
+
+    &-title {
+      width: 100%;
+      font-size: 20px;
+      font-weight: bolder;
+      text-align: center;
+      padding-bottom: 10px;
+    }
+
+    &-items {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    &-item {
+      padding: 5px 10px;
+      border: 3px solid black;
+      text-transform: capitalize;
+      font-weight: bold;
+      border-radius: 1.5em;
+      cursor: pointer;
+      color: white;
+    }
+  }
+
+  &__evolutions {
+    margin-top: 20px;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    place-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    cursor: pointer;
+
+    &-title {
+      grid-row: 1;
+      grid-column: span 3;
+      font-size: 20px;
+      font-weight: bolder;
+      padding-bottom: 20px;
+    }
+
+    &-message {
+      width: 100%;
+      grid-column: span 3;
+      text-align: center;
+
+      span {
+        text-transform: capitalize;
+        color: red;
+      }
+    }
+
+    &-items {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    &-item {
+      border: 4px solid black;
+      border-radius: 50%;
+      padding: 5px;
+
+      img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
+}

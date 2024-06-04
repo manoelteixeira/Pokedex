@@ -1,69 +1,93 @@
 // src/components/leftPannel/LeftPannel.jsx
 import { useEffect, useState } from "react";
+import PokemonListView from "./PokemonListView";
+
 import "./styles/leftPannel.scss";
 
-export default function LeftPannel({ offset, setOffset, setSelectedPokemon }) {
-  const [pokemonList, setPokemonList] = useState();
-  const [isLoaded, setIsLoaded] = useState(false);
+export default function LeftPannel({
+  page,
+  setPage,
+  pokemonList,
+  setSelectedPokemon,
+}) {
+  const [pokemonView, setPokemonView] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchList, setSearchList] = useState([]);
 
-  function incrementOffset() {
-    setIsLoaded(false);
-    setOffset(offset + 8);
-  }
-
-  function decrementOffset() {
-    if (offset > 0) {
-      setIsLoaded(false);
-      setOffset(offset - 8);
-    }
-  }
-
-  function selectPokemon(event) {
-    const pokemon = event.target.innerText.toLowerCase();
-    setSelectedPokemon(pokemon);
-  }
-
-  function handleForm(event) {
-    event.preventDefault();
-    setSelectedPokemon(event.target.name.value);
-    event.target.name.value = "";
-  }
+  const offset = 7;
 
   useEffect(() => {
-    const API_URL = `https://pokeapi.co/api/v2/pokemon?limit=8&offset=${offset}`;
+    if (search == "") {
+      const startIdx = (page - 1) * offset;
+      const endIdx = startIdx + offset;
+      setPokemonView(pokemonList.slice(startIdx, endIdx));
+    } else {
+      setPokemonView(searchList.slice(0, offset));
+    }
+  }, [page, searchList]);
 
-    fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        setPokemonList([...data.results]);
-        setIsLoaded(true);
-      });
-  }, [offset]);
+  useEffect(() => {
+    if (search != "") {
+      const list = pokemonList.filter(
+        (pokemon) => pokemon.name.slice(0, search.length) == search
+      );
+
+      setSearchList([...list]);
+    } else {
+      setSearchList([]);
+    }
+  }, [search]);
+
+  const pageUp = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const pageDown = () => {
+    setPage(page + 1);
+  };
+
+  const handleSearchChange = (event) => {
+    const field = event.target.value;
+    setSearch(field);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSelectedPokemon(search);
+  };
 
   return (
-    <div className="pannel">
-      <div className="pannel__header">Pokedex</div>
-      <ul className="pannel__list">
-        {isLoaded &&
-          pokemonList.map((pokemon) => {
-            return (
-              <li key={crypto.randomUUID()} onClick={selectPokemon}>
-                {pokemon.name.toUpperCase()}
-              </li>
-            );
-          })}
-      </ul>
-      <div className="pannel__controls">
-        <button onClick={decrementOffset}>
-          <img src="icons/caret-up-solid.svg" alt="" />
+    <div className="left-pannel">
+      {/* Title */}
+      <div className="left-pannel__title">Pokedex</div>
+      {/* Pokemon List */}
+      <div className="left-pannel__list">
+        <PokemonListView
+          pokemonList={pokemonView}
+          setSelectedPokemon={setSelectedPokemon}
+        />
+      </div>
+      {/* Controls */}
+      <div className="left-pannel__controls">
+        {/* Controls - Page Up/Down */}
+        <button onClick={pageUp}>
+          <img src="./icons/caret-up-solid.svg" alt="up" />
         </button>
-        <button onClick={incrementOffset}>
-          <img src="icons/caret-down-solid.svg" alt="" />
+        <button onClick={pageDown}>
+          <img src="./icons/caret-down-solid.svg" alt="down" />
         </button>
-        <form action="#" onSubmit={handleForm}>
-          <input type="text" id="name" placeholder="Pokemon Name or Number" />
+        {/* Controls - Search */}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            id="name"
+            placeholder="Pokemon Name"
+            onChange={handleSearchChange}
+          />
           <button type="submit">
-            <img src="icons/magnifying-glass-solid.svg" alt="" />
+            <img src="./icons/magnifying-glass-solid.svg" alt="" />
           </button>
         </form>
       </div>

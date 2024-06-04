@@ -1,10 +1,8 @@
 // src/components/rightPannel/RightPannel.jsx
 
 import { useEffect, useState } from "react";
-import Header from "./Header";
-import Types from "./Types";
-import Evolution from "../evolution/Evolution";
-
+import PokeballView from "./PokeballView";
+import PokemonView from "./PokemonView";
 import "./styles/rightPannel.scss";
 
 function getEvolutionChain(chain) {
@@ -20,38 +18,42 @@ function getEvolutionChain(chain) {
   return evlutions;
 }
 
-export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
-  const [pokemonData, setPokemonData] = useState();
-  const [evolutionDiv, setEvolutionDiv] = useState([]);
+export default function RightPannel({
+  selectedPokemon,
+  pokemonList,
+  setSelectedPokemon,
+}) {
+  const pokemon = (selectedPokemon != "" &&
+    pokemonList.find((pokemon) => pokemon.name == selectedPokemon)) || {
+    error: "Pokemon Not Found",
+  };
 
-  const [loaded, setLoaded] = useState(false);
-
-  function noPokemon(message, error = false) {
+  if (!pokemon) {
+    //   No Pokemon selected
     return (
-      <div className="noPokemon">
-        <div className="noPokemon__pokeball"></div>
-        <div className={`noPokemon__message`} style={{ color: error && "red" }}>
-          {message}
-        </div>
+      <div className="right-pannel">
+        <PokeballView message={"Select Pokemon"} />
       </div>
     );
   }
 
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [pokemonData, setPokemonData] = useState();
+
   useEffect(() => {
-    if (selectedPokemon != "") {
-      const pokemon = {};
-      const API_URL = `https://pokeapi.co/api/v2/pokemon/${selectedPokemon}`;
-      fetch(API_URL) // Basic Pokemon Data
+    if (pokemon.url) {
+      setIsDataLoaded(false);
+      const data = {};
+      fetch(pokemon.url)
         .then((res) => res.json())
         .then((resJSON) => {
-          pokemon["id"] = resJSON.id;
-          pokemon["order"] = resJSON.order;
-          pokemon["name"] = resJSON.name;
-          pokemon["types"] = resJSON.types.map((slot) => slot.type.name);
-          pokemon["sprite"] =
+          data["name"] = resJSON.name;
+          data["number"] = resJSON.id;
+          data["types"] = resJSON.types.map((slot) => slot.type.name);
+          data["sprite"] =
             resJSON.sprites.other.dream_world.front_default ||
             resJSON.sprites.front_default;
-
           return resJSON.species.url;
         })
         .then((speciesURL) => {
@@ -63,57 +65,70 @@ export default function RightPannel({ selectedPokemon, setSelectedPokemon }) {
                 .then((res) => res.json())
                 .then((resJSON) => resJSON.chain)
                 .then((chain) => getEvolutionChain(chain))
-                .then((evolutions) => (pokemon["evolutions"] = evolutions))
+
+                .then((evolutions) => {
+                  data["evolutions"] = [];
+                  const baseURL = import.meta.env.VITE_API_BASE_URL;
+                  evolutions.forEach((evolution) => {
+                    const url = baseURL + `pokemon/${evolution}`;
+                    fetch(url)
+                      .then((res) => res.json())
+                      .then((resJSON) => {
+                        const name = resJSON.name;
+                        const sprite =
+                          resJSON.sprites.other.dream_world.front_default ||
+                          resJSON.sprites.front_default;
+                        data.evolutions.push({ name, sprite });
+                      });
+                  });
+                })
                 .finally(() => {
-                  setPokemonData(pokemon);
-                  setLoaded(true);
-                });
-            });
+                  setPokemonData({ ...data });
+                  console.log(pokemonData);
+                  setIsDataLoaded(true);
+                })
+                .catch(
+                  () =>
+                    (pokemon["error"] = "Faild to Load Pokemon Evolution Chain")
+                );
+            })
+            .catch(() => (pokemon["error"] = "Faild to Load Pokemon Species"));
         })
-        .catch(() => setSelectedPokemon("invalid"));
+        .catch(() => (pokemon["error"] = "Faild to Load Pokemon "));
     }
   }, [selectedPokemon]);
 
   useEffect(() => {
-    if (pokemonData) {
-      setEvolutionDiv(
-        pokemonData.evolutions.map((pokemon) => {
-          return (
-            <Evolution
-              key={crypto.randomUUID()}
-              pokemon={pokemon}
-              setSelectedPokemon={setSelectedPokemon}
-              selectedPokemon={selectedPokemon}
-            />
-          );
-        })
-      );
-    }
-  }, [pokemonData]);
+    setIsLoaded(false);
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 1400);
+  }, [isDataLoaded]);
 
-  if (selectedPokemon == "") {
-    return <div className="details">{noPokemon("Select a Pokemon")}</div>;
-  } else if (selectedPokemon == "invalid") {
-    return <div className="details">{noPokemon("Invaild Pokemon", true)}</div>;
-  } else if (!loaded) {
-    return <div className="details">{noPokemon("Loading ...")}</div>;
-  } else if (!pokemonData) {
+  // Invalid Pokemon
+  if (pokemon.error) {
     return (
-      <div className="details">{noPokemon("Pokemon Not Found !!!", true)}</div>
+      <div className="right-pannel">
+        <PokeballView message={pokemon.error} error={true} />
+      </div>
+    );
+  }
+
+  if (!isLoaded) {
+    // Loading Pokemon
+    return (
+      <div className="right-pannel">
+        <PokeballView message={"Loading ..."} loading={true} />
+      </div>
     );
   } else {
+    // Loaded
     return (
-      <div className="details">
-        <Header pokemonData={pokemonData} />
-
-        <Types pokemonData={pokemonData} />
-        {/* Evolutions */}
-        {pokemonData.evolutions.length > 1 && (
-          <div className="details__evolutions">
-            <div className="details__evolutions-title">Evolutions</div>
-            {evolutionDiv}
-          </div>
-        )}
+      <div className="right-pannel">
+        <PokemonView
+          pokemon={pokemonData}
+          setSelectedPokemon={setSelectedPokemon}
+        />
       </div>
     );
   }

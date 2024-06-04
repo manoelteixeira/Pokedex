@@ -1,46 +1,72 @@
+// src/App.jsx
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import LeftPannel from "./components/leftPannel/LeftPannel";
 import RightPannel from "./components/rightPannel/RightPannel";
 import "./styles/App.scss";
-import { useSearchParams } from "react-router-dom";
 
-export default function App() {
+function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [pokemonList, setPokemonList] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageNumber = Number(searchParams.get("page")) || 0;
-  const pokemon = searchParams.get("pokemon") || "";
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
+  const [selectedPokemon, setSelectedPokemon] = useState(
+    searchParams.get("pokemon") || ""
+  );
 
-  const [offset, setOffset] = useState(pageNumber * 8);
-  const [selectedPokemon, setSelectedPokemon] = useState(pokemon);
+  useEffect(() => {
+    setIsLoaded(false);
+    const baseURL = import.meta.env.VITE_API_BASE_URL;
+    const url = baseURL + `pokemon?limit=100000&`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((resJSON) => resJSON.results)
+      .then((data) => {
+        setPokemonList([...data]);
+        setIsLoaded(true);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   useEffect(() => {
     const params = {};
-    const page = offset / 8;
-    if (page > 0) {
+    if (page > 1) {
       params["page"] = page;
     }
     if (selectedPokemon != "") {
       params["pokemon"] = selectedPokemon;
     }
-
     setSearchParams({ ...params });
-  }, [offset, selectedPokemon]);
+  }, [selectedPokemon, page]);
 
-  return (
-    <div className="pokedex">
-      <LeftPannel
-        offset={offset}
-        setOffset={setOffset}
-        setSelectedPokemon={setSelectedPokemon}
-      />
-      <div className="pokedex__middle">
-        <div className="pokedex__middle-line"></div>
-        <div className="pokedex__middle-line"></div>
-        <div className="pokedex__middle-line"></div>
-      </div>
-      <RightPannel
-        selectedPokemon={selectedPokemon}
-        setSelectedPokemon={setSelectedPokemon}
-      />
-    </div>
-  );
+  if (isLoaded) {
+    return (
+      <>
+        <div className="pokedex">
+          <div className="pokedex__pannel">
+            <LeftPannel
+              page={page}
+              setPage={setPage}
+              pokemonList={pokemonList}
+              setSelectedPokemon={setSelectedPokemon}
+            />
+          </div>
+          <div className="pokedex__middle">
+            <div className="pokedex__middle-line"></div>
+            <div className="pokedex__middle-line"></div>
+            <div className="pokedex__middle-line"></div>
+          </div>
+          <div className="pokedex__pannel">
+            <RightPannel
+              pokemonList={pokemonList}
+              selectedPokemon={selectedPokemon}
+              setSelectedPokemon={setSelectedPokemon}
+            />
+          </div>
+        </div>
+      </>
+    );
+  }
 }
+
+export default App;
