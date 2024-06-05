@@ -56,6 +56,7 @@ export default function LeftPannel({
   const handleSubmit = (event) => {
     event.preventDefault();
     setSelectedPokemon(search);
+    setSearch("");
   };
 
   return (
@@ -85,6 +86,7 @@ export default function LeftPannel({
             id="name"
             placeholder="Pokemon Name"
             onChange={handleSearchChange}
+            value={search}
           />
           <button type="submit">
             <img src="./icons/magnifying-glass-solid.svg" alt="" />
