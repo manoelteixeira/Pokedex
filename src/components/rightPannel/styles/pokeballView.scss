@@ -62,26 +62,15 @@
 }
 
 .loading {
-  animation: shake 2.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  animation: roll 1s infinite;
 
-  @keyframes shake {
+  @keyframes roll {
     0% {
-      transform: translateX(0) rotate(0);
+      transform: rotate(0);
     }
-    20% {
-      transform: translateX(-10px) rotate(-20deg);
-    }
-    30% {
-      transform: translateX(10px) rotate(20deg);
-    }
-    50% {
-      transform: translateX(-10px) rotate(-10deg);
-    }
-    60% {
-      transform: translateX(10px) rotate(10deg);
-    }
+
     100% {
-      transform: translateX(0) rotate(0);
+      transform: rotate(360deg);
     }
   }
 }
