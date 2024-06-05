@@ -101,7 +101,7 @@ export default function RightPannel({
     setIsLoaded(false);
     setTimeout(() => {
       setIsLoaded(true);
-    }, 2400);
+    }, 2500);
   }, [isDataLoaded]);
 
   // Invalid Pokemon
